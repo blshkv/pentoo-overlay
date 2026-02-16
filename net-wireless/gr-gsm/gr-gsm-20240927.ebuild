@@ -25,7 +25,7 @@ IUSE="doc"
 #if(NOT LIBOSMOCORE_FOUND OR NOT LIBOSMOCODEC_FOUND OR NOT LIBOSMOGSM_FOUND)
 #    set(LOCAL_OSMOCOM ON)
 DEPEND="${PYTHON_DEPS}
-	>=net-wireless/gnuradio-3.10.0:=
+	>=net-wireless/gnuradio-3.10.0:=[qt5]
 	net-wireless/gr-osmosdr
 	dev-libs/boost:=
 	dev-libs/log4cpp:=
@@ -38,6 +38,8 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 src_prepare() {
 	#fixme below
 	sed -i "s|\${GR_DOC_DIR}\/\${CMAKE_PROJECT_NAME}|${EPREFIX}/usr/share/doc/${PF}|g" CMakeLists.txt
+	eapply "${FILESDIR}"/652.patch
+#	eapply "${FILESDIR}"/pyqt6.patch
 	cmake_src_prepare
 }
 
