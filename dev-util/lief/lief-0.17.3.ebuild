@@ -8,8 +8,7 @@ DISTUTILS_OPTIONAL=1
 DISTUTILS_USE_PEP517=standalone
 DISTUTILS_EXT=1
 
-#FIXME: pydantic-2.11 does not support 3.14
-PYTHON_COMPAT=( python3_{12..13} )
+PYTHON_COMPAT=( python3_{12..14} )
 inherit distutils-r1 cmake
 
 DESCRIPTION="Library to instrument executable formats"
@@ -29,8 +28,7 @@ IUSE="examples +python static-libs"
 # lief requires a forked version of nanobind, see LIEF-0.15.1/api/python/CMakeLists.txt
 # So don't try to use a standard one
 RDEPEND="python? ( ${PYTHON_DEPS}
-	<dev-python/pydantic-2.12.0[${PYTHON_USEDEP}]
-	dev-python/pydantic-core[${PYTHON_USEDEP}]
+	>=dev-python/pydantic-2.12.3[${PYTHON_USEDEP}]
 	dev-python/tomli[${PYTHON_USEDEP}]
 	dev-python/xtract[${PYTHON_USEDEP}]
 	)"
@@ -53,6 +51,8 @@ wrap_python() {
 }
 
 src_prepare() {
+	eapply ${FILESDIR}/python_314.patch
+
 	#fix multilib
 	sed -i "s|CMAKE_INSTALL_LIBDIR \"lib\"|CMAKE_INSTALL_LIBDIR \"$(get_libdir)\"|" CMakeLists.txt || die
 #	sed -i '/COMMAND ${CMAKE_STRIP}/d' CMakeLists.txt || die
