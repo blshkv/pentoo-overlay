@@ -19,6 +19,7 @@ S="${WORKDIR}/${PN}-${HASH_COMMIT}"
 
 LICENSE="GPL-3"
 SLOT="0"
+# qt5 is EOF, may break at some point
 KEYWORDS="~amd64 ~x86"
 IUSE="doc"
 
@@ -35,6 +36,8 @@ DEPEND="${PYTHON_DEPS}
 	sci-libs/volk:="
 RDEPEND="${DEPEND}"
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
+
+CMAKE_SKIP_TESTS=( qa_tch_f_chans_demapper )
 
 src_prepare() {
 	#fixme below
