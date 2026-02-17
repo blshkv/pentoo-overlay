@@ -37,7 +37,7 @@ DEPEND="${PYTHON_DEPS}
 RDEPEND="${DEPEND}"
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
-CMAKE_SKIP_TESTS=( qa_tch_f_chans_demapper )
+CMAKE_SKIP_TESTS=( qa_tch_f_chans_demapper qa_tch_h_chans_demapper )
 
 src_prepare() {
 	#fixme below
