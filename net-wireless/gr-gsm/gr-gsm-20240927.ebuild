@@ -25,6 +25,7 @@ IUSE="doc"
 #if(NOT LIBOSMOCORE_FOUND OR NOT LIBOSMOCODEC_FOUND OR NOT LIBOSMOGSM_FOUND)
 #    set(LOCAL_OSMOCOM ON)
 DEPEND="${PYTHON_DEPS}
+	$(python_gen_cond_dep 'dev-python/pybind11[${PYTHON_USEDEP}]')
 	>=net-wireless/gnuradio-3.10.0:=[qt5]
 	net-wireless/gr-osmosdr
 	dev-libs/boost:=
