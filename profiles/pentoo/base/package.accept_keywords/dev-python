@@ -3,12 +3,13 @@
 dev-python/bluepy
 #killerbee
 dev-python/rangeparser
+#lief dep
+~dev-python/pydantic-2.12.5
 
 dev-python/cmake-converter
 
 =dev-python/pyotherside-1.6* ~amd64
 
-#gentoo is just old as shit
 #apple_bleee
 dev-python/fleep
 dev-python/ctypescrypto
