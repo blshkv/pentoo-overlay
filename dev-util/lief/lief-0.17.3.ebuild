@@ -51,7 +51,7 @@ wrap_python() {
 }
 
 src_prepare() {
-	eapply ${FILESDIR}/python_314.patch
+	eapply "${FILESDIR}/python_314.patch"
 
 	#fix multilib
 	sed -i "s|CMAKE_INSTALL_LIBDIR \"lib\"|CMAKE_INSTALL_LIBDIR \"$(get_libdir)\"|" CMakeLists.txt || die
