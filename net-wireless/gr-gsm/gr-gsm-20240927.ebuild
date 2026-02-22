@@ -27,7 +27,7 @@ IUSE="doc"
 #    set(LOCAL_OSMOCOM ON)
 DEPEND="${PYTHON_DEPS}
 	$(python_gen_cond_dep 'dev-python/pybind11[${PYTHON_USEDEP}]')
-	>=net-wireless/gnuradio-3.10.0:=[qt5]
+	>=net-wireless/gnuradio-3.10.0:=[qt5,network]
 	net-wireless/gr-osmosdr
 	dev-libs/boost:=
 	dev-libs/log4cpp:=
