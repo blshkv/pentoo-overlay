@@ -1,4 +1,4 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 2026 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -12,6 +12,12 @@ elif [[ $(ver_cut 3) == "beta"  ]]; then
 	SRC_URI="https://github.com/vulnersCom/nmap-vulners/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~amd64 ~x86"
 	S="${WORKDIR}/${PN}-${MY_PV}"
+elif [[ ${PV} == "20250927"  ]]; then
+	HASH_COMMIT="0555294abe71857c581afc2ef62ea3ca5c7b7145"
+#https://github.com/vulnersCom/nmap-vulners/archive/0555294abe71857c581afc2ef62ea3ca5c7b7145.zip
+	SRC_URI="https://github.com/vulnersCom/nmap-vulners/archive/${HASH_COMMIT}.zip -> ${P}.zip"
+	KEYWORDS="~amd64 ~x86"
+	S="${WORKDIR}/${PN}-${HASH_COMMIT}"
 else
 	SRC_URI="https://github.com/vulnersCom/nmap-vulners/archive/v${PV}-release.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="amd64 x86"
@@ -28,6 +34,8 @@ RDEPEND="net-analyzer/nmap[nse]"
 
 src_install() {
 	insinto /usr/share/nmap/scripts/vulners
+	doins http-vulners-regex.nse
 	doins vulners.nse
+	doins vulners_enterprise.nse
 	dodoc README.md
 }
