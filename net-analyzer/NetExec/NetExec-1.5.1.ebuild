@@ -67,6 +67,8 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 python_prepare_all() {
 	sed -i -e 's#, "poetry-dynamic-versioning>=1.0.0,<2.0.0"##' pyproject.toml || die
 	sed -i -e 's#poetry_dynamic_versioning.backend#poetry.core.masonry.api#' pyproject.toml || die
+	sed -i -e "s#version = \"0.0.0\"#version = \"${PV}\"#" pyproject.toml || die
+
 	#sed -i -e '/impacket/d' -e '/pynfsclient/d' pyproject.toml || die
 
 	#use pycryptodome instead of pycryptodomex
@@ -74,3 +76,4 @@ python_prepare_all() {
 	sed -i -e 's#Cryptodome#Crypto#' $(grep -r --color=never 'Cryptodome' | awk -F':' '{print $1}') || die
 	distutils-r1_python_prepare_all
 }
+
