@@ -36,6 +36,11 @@ fi
 if [[ ${CATEGORY}/${PN} == dev-python/numpy ]]; then
   export CFLAGS="${CFLAGS/-flto/}"
 fi
+if [[ ${CATEGORY}/${PN} == dev-util/mingw64-toolchain ]]; then
+  # zero uses extra warnings to find bugs
+  export CXXFLAGS="${CXXFLAGS/-Werror=format-security/}"
+  export CFLAGS="${CFLAGS/-Werror=stringop-overread/}"
+fi
 if [[ ${CATEGORY}/${PN} == media-video/mplayer ]]; then
   export CFLAGS="${CFLAGS/-flto/}"
 fi
