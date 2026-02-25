@@ -168,7 +168,6 @@ src_prepare(){
 	default
 	build_time=$(date '+%Y-%m-%d %H:%M:%S')
 	sed -i "s#\"\$ctime\",#\"${build_time}\",#" tools/mkversion.sh || die
-	sed -i 's#PYTHON="uv run --script"#PYTHON="python3"#' tools/pm3_tests.sh || die
 }
 
 src_compile(){
@@ -221,15 +220,15 @@ src_test() {
 	# This isn't installed and was removed by "make clean" after firmware build
 	sed -i '/if ! CheckFileExist "fpgacompress exists"/d' tools/pm3_tests.sh || die
 	if use firmware; then
-		./tools/pm3_tests.sh --long || die
+		SKIPUV=1 ./tools/pm3_tests.sh --long || die
 	else
-		./tools/pm3_tests.sh --long client || die
+		SKIPUV=1 ./tools/pm3_tests.sh --long client || die
 	fi
 	# Opencl stuff doesn't work as the portage user
 	#if use opencl; then
-	#	./tools/pm3_tests.sh --long --opencl hitag2crack || die
+	#	SKIPUV=1 ./tools/pm3_tests.sh --long --opencl hitag2crack || die
 	#else
-		./tools/pm3_tests.sh --long hitag2crack || die
+		SKIPUV=1 ./tools/pm3_tests.sh --long hitag2crack || die
 	#fi
 }
 
