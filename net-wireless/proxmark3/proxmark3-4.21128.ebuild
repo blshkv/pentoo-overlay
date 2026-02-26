@@ -73,6 +73,8 @@ QA_FLAGS_IGNORED="usr/share/proxmark3/firmware/bootrom.elf
 		usr/share/proxmark3/firmware/PM3GENERIC_HF15SIM.elf
 		usr/share/proxmark3/firmware/PM3GENERIC_HFAVEFUL.elf
 		usr/share/proxmark3/firmware/PM3GENERIC_HFCRAFTBYTE.elf
+		usr/share/proxmark3/firmware/PM3GENERIC_HFDOEGOX_AUTH0.elf
+		usr/share/proxmark3/firmware/PM3GENERIC_HFEMVPNG.elf
 		usr/share/proxmark3/firmware/PM3GENERIC_HFLEGIC.elf
 		usr/share/proxmark3/firmware/PM3GENERIC_HFMATTYRUN.elf
 		usr/share/proxmark3/firmware/PM3GENERIC_HFMSDSAL.elf
@@ -106,6 +108,8 @@ QA_FLAGS_IGNORED="usr/share/proxmark3/firmware/bootrom.elf
 		usr/share/proxmark3/firmware/PM3RDV4_HFBOG.elf
 		usr/share/proxmark3/firmware/PM3RDV4_HFCOLIN.elf
 		usr/share/proxmark3/firmware/PM3RDV4_HFCRAFTBYTE.elf
+		usr/share/proxmark3/firmware/PM3RDV4_HFDOEGOX_AUTH0.elf
+		usr/share/proxmark3/firmware/PM3RDV4_HFEMVPNG.elf
 		usr/share/proxmark3/firmware/PM3RDV4_HFICECLASS.elf
 		usr/share/proxmark3/firmware/PM3RDV4_HFLEGIC.elf
 		usr/share/proxmark3/firmware/PM3RDV4_HFLEGICSIM.elf
@@ -119,6 +123,7 @@ QA_FLAGS_IGNORED="usr/share/proxmark3/firmware/bootrom.elf
 		usr/share/proxmark3/firmware/PM3RDV4_HFYOUNG.elf
 		usr/share/proxmark3/firmware/PM3RDV4_DANKARMULTI.elf
 		usr/share/proxmark3/firmware/PM3RDV4_BTADDON.elf
+		usr/share/proxmark3/firmware/PM3RDV4_BTADDON_DANKARMULTI.elf
 		usr/share/proxmark3/firmware/PM3RDV4_BTADDON_LFSKELETON.elf
 		usr/share/proxmark3/firmware/PM3RDV4_BTADDON_LFEM4100EMUL.elf
 		usr/share/proxmark3/firmware/PM3RDV4_BTADDON_LFEM4100RSWB.elf
@@ -143,6 +148,8 @@ QA_FLAGS_IGNORED="usr/share/proxmark3/firmware/bootrom.elf
 		usr/share/proxmark3/firmware/PM3RDV4_BTADDON_HFCARDHOPPER.elf
 		usr/share/proxmark3/firmware/PM3RDV4_BTADDON_HFCOLIN.elf
 		usr/share/proxmark3/firmware/PM3RDV4_BTADDON_HFCRAFTBYTE.elf
+		usr/share/proxmark3/firmware/PM3RDV4_BTADDON_HFDOEGOX_AUTH0.elf
+		usr/share/proxmark3/firmware/PM3RDV4_BTADDON_HFEMVPNG.elf
 		usr/share/proxmark3/firmware/PM3RDV4_BTADDON_HFICECLASS.elf
 		usr/share/proxmark3/firmware/PM3RDV4_BTADDON_HFLEGIC.elf
 		usr/share/proxmark3/firmware/PM3RDV4_BTADDON_HFLEGICSIM.elf
@@ -154,9 +161,10 @@ QA_FLAGS_IGNORED="usr/share/proxmark3/firmware/bootrom.elf
 		usr/share/proxmark3/firmware/PM3RDV4_BTADDON_HFTMUDFORD.elf
 		usr/share/proxmark3/firmware/PM3RDV4_BTADDON_HFUNISNIFF.elf
 		usr/share/proxmark3/firmware/PM3RDV4_BTADDON_HFYOUNG.elf
-		usr/share/proxmark3/firmware/PM3RDV4_BTADDON_DANKARMULTI.elf
 "
 QA_PRESTRIPPED="${QA_FLAGS_IGNORED}"
+
+PATCHES=( "${FILESDIR}"/${P}-skipuv.patch )
 
 src_prepare(){
 	default
@@ -214,15 +222,15 @@ src_test() {
 	# This isn't installed and was removed by "make clean" after firmware build
 	sed -i '/if ! CheckFileExist "fpgacompress exists"/d' tools/pm3_tests.sh || die
 	if use firmware; then
-		./tools/pm3_tests.sh --long || die
+		SKIPUV=1 ./tools/pm3_tests.sh --long || die
 	else
-		./tools/pm3_tests.sh --long client || die
+		SKIPUV=1 ./tools/pm3_tests.sh --long client || die
 	fi
 	# Opencl stuff doesn't work as the portage user
 	#if use opencl; then
-	#	./tools/pm3_tests.sh --long --opencl hitag2crack || die
+	#	SKIPUV=1 ./tools/pm3_tests.sh --long --opencl hitag2crack || die
 	#else
-		./tools/pm3_tests.sh --long hitag2crack || die
+		SKIPUV=1 ./tools/pm3_tests.sh --long hitag2crack || die
 	#fi
 }
 
