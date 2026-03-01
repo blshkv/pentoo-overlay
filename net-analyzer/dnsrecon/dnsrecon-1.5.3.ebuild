@@ -37,5 +37,5 @@ src_prepare() {
 
 python_install() {
 	distutils-r1_python_install
-	python_foreach_impl python_newscript tools/parser.py dnsrecon-parser
+	python_newscript tools/parser.py dnsrecon-parser
 }
