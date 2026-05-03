@@ -38,7 +38,6 @@ PDEPEND="net-wireless/gnuradio[uhd?]
 		net-analyzer/multimon-ng
 		net-wireless/qdmr
 		net-wireless/dump1090
-		net-wireless/gr-ieee802154
 		net-wireless/nrf802154_sniffer
 		net-wireless/gr-rds
 		net-wireless/inspectrum
