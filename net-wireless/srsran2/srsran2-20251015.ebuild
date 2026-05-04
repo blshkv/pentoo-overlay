@@ -6,7 +6,7 @@ EAPI=8
 inherit cmake flag-o-matic
 
 DESCRIPTION="Open source SDR 4G software suite from Software Radio Systems"
-HOMEPAGE="https://github.com/hdtuanss/srsRAN2"
+HOMEPAGE="https://github.com/Miniman2718/srsRAN2"
 
 # Possible issues to look into
 #https://bugs.gentoo.org/713684
@@ -14,8 +14,8 @@ HOMEPAGE="https://github.com/hdtuanss/srsRAN2"
 #https://bugs.gentoo.org/733662
 #https://bugs.gentoo.org/832618
 
-HASH_COMMIT="0acc79d3fe5b153a18b62e8ef5af1a0fb2327a18"
-SRC_URI="https://github.com/hdtuanss/srsRAN2/archive/${HASH_COMMIT}.tar.gz -> ${P}.gh.tar.gz"
+HASH_COMMIT="1a11387abc517bff4107fa0da3d9348945584f6c"
+SRC_URI="https://github.com/Miniman2718/srsRAN2/archive/${HASH_COMMIT}.tar.gz -> ${P}.gh.tar.gz"
 S="${WORKDIR}/srsRAN2-${HASH_COMMIT}"
 
 LICENSE="GPL-3"
@@ -43,7 +43,7 @@ RDEPEND="${DEPEND}"
 BDEPEND="virtual/pkgconfig"
 
 src_prepare() {
-	eapply "${FILESDIR}"/srsran2_array.patch
+#	eapply "${FILESDIR}"/srsran2_array.patch
 	eapply "${FILESDIR}"/srsran2_asn1_lib.patch
 
 	sed -i '/ -Werror"/d' CMakeLists.txt || die
@@ -76,6 +76,7 @@ src_configure() {
 		-DENABLE_HARDSIM="$(usex simcard)"
 		-DCMAKE_C_STANDARD=99
 		-DCMAKE_CXX_STANDARD=14
+		-DCMAKE_POLICY_VERSION_MINIMUM=3.5
 	)
 	# readd nerfed cflags that are required
 	append-cflags "-fno-strict-aliasing -D_GNU_SOURCE"
