@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Gentoo Authors
+# Copyright 1999-2026 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -57,6 +57,7 @@ PDEPEND="
 			!rfctf-virtual? ( net-wireless/gr-osmosdr )
 			net-wireless/gnuradio
 			net-wireless/gr-mixalot
+			net-wireless/gr-tenna
 			dev-python/numpy
 			dev-python/pyzmq
 			net-wireless/gr-paint
