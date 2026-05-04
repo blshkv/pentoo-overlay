@@ -19,7 +19,8 @@ if [[ "${PV}" == "9999" ]]; then
 	EGIT_REPO_URI="https://github.com/srsran/srsRAN_4G.git"
 else
 	inherit vcs-snapshot
-	KEYWORDS="~amd64 ~x86"
+	#FIXME: remove temporary, so it could merge
+	#KEYWORDS="~amd64 ~x86"
 	MY_PV=${PV//./_}
 	SRC_URI="https://github.com/srsran/srsRAN_4G/archive/refs/tags/release_${MY_PV}.tar.gz -> ${P}.tar.gz"
 fi
