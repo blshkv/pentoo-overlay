@@ -49,6 +49,9 @@ BDEPEND="virtual/pkgconfig"
 
 src_prepare() {
 	sed -i '/ -Werror"/d' CMakeLists.txt || die
+	# Boost::system was removed as a compiled component in Boost 1.69+ (header-only)
+	# and no longer exists in Boost 1.78+; drop the obsolete UHD workaround
+	sed -i '/list(APPEND BOOST_REQUIRED_COMPONENTS "system")/d' CMakeLists.txt || die
 	#break upstream hijacking of cflags
 	sed -i \
 		-e 's/"GNU"/"NERF"/g' \
