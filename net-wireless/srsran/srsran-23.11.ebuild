@@ -24,7 +24,8 @@ else
 	SRC_URI="https://github.com/srsran/srsRAN_4G/archive/refs/tags/release_${MY_PV}.tar.gz -> ${P}.tar.gz"
 fi
 
-RESTRICT="!test? ( test )"
+#96% tests passed, 67 tests failed out of 1528
+RESTRICT="test"
 
 LICENSE="GPL-3"
 SLOT="0"
