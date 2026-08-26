@@ -5,7 +5,6 @@ EAPI=8
 
 DISTUTILS_USE_PEP517=setuptools
 PYTHON_COMPAT=( python3_{12..14} )
-DISTUTILS_USE_PEP517=setuptools
 DISTUTILS_EXT=1
 inherit distutils-r1 pypi
 
@@ -17,7 +16,3 @@ SLOT="0"
 KEYWORDS="amd64 ~arm64 x86"
 
 RESTRICT="test"
-
-RDEPEND=""
-DEPEND="${RDEPEND}"
-REQUIRED_USE="${PYTHON_REQUIRED_USE}"
