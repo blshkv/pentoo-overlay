@@ -60,16 +60,14 @@ LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="amd64"
 
-#FIXME:
-# * QA Notice: Files built without respecting CFLAGS have been detected
-# * QA Notice: Files built without respecting LDFLAGS have been detected
-# *  Please include the following list of files in your report:
-# * /usr/share/ghidra/GPL/DemanglerGnu/os/linux_x86_64/demangler_gnu_v2_24
-# * /usr/share/ghidra/GPL/DemanglerGnu/os/linux_x86_64/demangler_gnu_v2_41
-# * /usr/share/ghidra/Ghidra/Features/Decompiler/os/linux_x86_64/decompile
-# * /usr/share/ghidra/Ghidra/Features/Decompiler/os/linux_x86_64/sleigh
-# * /usr/share/ghidra/Ghidra/Features/FileFormats/data/sevenzipnativelibs/Linux-amd64/lib7-Zip-JBinding.so
-# * /usr/share/ghidra/Ghidra/Features/FileFormats/os/linux_x86_64/lzfse
+QA_FLAGS_IGNORED="
+	usr/share/ghidra/GPL/DemanglerGnu/os/linux_x86_64/demangler_gnu_v2_24
+	usr/share/ghidra/GPL/DemanglerGnu/os/linux_x86_64/demangler_gnu_v2_41
+	usr/share/ghidra/Ghidra/Features/Decompiler/os/linux_x86_64/decompile
+	usr/share/ghidra/Ghidra/Features/Decompiler/os/linux_x86_64/sleigh
+	usr/share/ghidra/Ghidra/Features/FileFormats/data/sevenzipnativelibs/Linux-amd64/lib7-Zip-JBinding.so
+	usr/share/ghidra/Ghidra/Features/FileFormats/os/linux_x86_64/lzfse
+"
 
 # FIXME:
 # build fails with system-vm jdk-25, see:
