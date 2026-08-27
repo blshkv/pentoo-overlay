@@ -5,4 +5,17 @@
 		<email>unknown@pentoo.ch</email>
 		<name>Author Unknown</name>
 	</maintainer>
+	<use>
+		<flag name="ae-isready">Build the ae_isready helper binary</flag>
+		<flag name="amass-engine">Build the amass_engine binary</flag>
+		<flag name="oam-assoc">Build the oam_assoc binary</flag>
+		<flag name="oam-enum">Build the oam_enum enumeration binary</flag>
+		<flag name="oam-i2y">Build the oam_i2y binary</flag>
+		<flag name="oam-subs">Build the oam_subs binary</flag>
+		<flag name="oam-track">Build the oam_track binary</flag>
+		<flag name="oam-viz">Build the oam_viz visualization binary</flag>
+	</use>
+	<upstream>
+		<remote-id type="github">owasp-amass/amass</remote-id>
+	</upstream>
 </pkgmetadata>
