@@ -326,6 +326,12 @@ dev-python/browser-cookie3
 
 # required by app-pda/pymobiledevice3
 dev-python/fastapi ~amd64
+dev-python/xonsh ~amd64
+dev-python/asgi-webdav ~amd64
+dev-python/httpx-kerberos ~amd64
+dev-python/asgi-middleware-static-file ~amd64
+dev-python/dataclass-wizard ~amd64
+dev-python/pytimeparse ~amd64
 
 # required by dev-python/protobuf-7
 ~dev-python/grpcio-1.82.1
