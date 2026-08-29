@@ -8,7 +8,7 @@ PYTHON_COMPAT=( python3_{12..14} )
 
 inherit distutils-r1 pypi
 
-DESCRIPTION="Access zip file content hosted remotely without downloading the full file."
+DESCRIPTION="Access zip file content hosted remotely without downloading the full file"
 HOMEPAGE="https://github.com/gtsystem/python-remotezip"
 
 LICENSE="MIT"
