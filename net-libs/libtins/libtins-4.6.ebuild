@@ -1,11 +1,11 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 2026 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
 inherit cmake
 
-DESCRIPTION="High-level, multiplatform C++ network packet sniffing and crafting library."
+DESCRIPTION="High-level, multiplatform C++ network packet sniffing and crafting library"
 HOMEPAGE="https://libtins.github.io/"
 SRC_URI="https://github.com/mfontanini/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 
