@@ -5,4 +5,8 @@
 		<email>unknown@pentoo.ch</email>
 		<name>Author Unknown</name>
 	</maintainer>
+	<upstream>
+		<remote-id type="github">easypost/syslog-rfc5424-formatter</remote-id>
+		<remote-id type="pypi">syslog-rfc5424-formatter</remote-id>
+	</upstream>
 </pkgmetadata>
