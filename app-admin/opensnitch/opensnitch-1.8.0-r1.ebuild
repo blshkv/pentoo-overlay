@@ -12,7 +12,7 @@ HOMEPAGE="https://github.com/evilsocket/opensnitch"
 
 SRC_URI="
 	https://github.com/evilsocket/opensnitch/archive/refs/tags/v${PV}.tar.gz -> ${P}.gh.tar.gz
-	https://dev.pentoo.ch/~blshkv/distfiles/${P}-vendor.tar.xz
+	https://github.com/pentoo/pentoo-golang-dist/releases/download/${P}/${P}-deps.tar.xz
 "
 
 LICENSE="GPL-3"
@@ -22,8 +22,9 @@ KEYWORDS="amd64"
 IUSE="+audit bpf +iptables +nftables systemd"
 REQUIRED_USE="!kernel_Hurd? ( || ( iptables nftables ) )"
 
-DEPEND=">=dev-lang/go-1.19
-	net-libs/libnetfilter_queue
+DEPEND="net-libs/libnetfilter_queue"
+BDEPEND+="
+	dev-libs/protobuf[protoc]
 	dev-go/protobuf-go
 	=dev-go/protoc-gen-go-grpc-1.3.0
 "
@@ -103,8 +104,8 @@ src_compile() {
 	popd > /dev/null || die
 
 	pushd daemon || die
+	go-module_src_configure
 	GOCACHE="${T}/go-cache" \
-	GOMODCACHE="${WORKDIR}/${PN}-${PV}/vendor" \
 	ego build -v -buildmode=pie -o opensnitchd || die
 	popd > /dev/null || die
 

@@ -7,7 +7,10 @@ inherit go-module
 
 DESCRIPTION="High-performance secrets scanner. CLI, Go library, Burp Suite/Chrome extension."
 HOMEPAGE="https://github.com/praetorian-inc/titus/wiki"
-SRC_URI="https://github.com/praetorian-inc/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.gh.tar.gz"
+SRC_URI="
+	https://github.com/praetorian-inc/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.gh.tar.gz
+	https://github.com/pentoo/pentoo-golang-dist/releases/download/${P}/${P}-deps.tar.xz
+"
 S="${WORKDIR}/${PN}-${PV}"
 
 LICENSE="MIT"
@@ -26,10 +29,6 @@ BDEPEND="
 
 QA_PREBUILD="*"
 
-GOFLAGS="-mod=mod"
-export GOPROXY="https://proxy.golang.org,direct"
-export GOSUMDB="sum.golang.org"
-
 src_prepare() {
 	default
 }
@@ -47,7 +46,7 @@ local titus_ldflags=(
 		"-X main.BuildTime=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 	)
 
-	go build \
+	ego build \
 		-trimpath \
 		-buildmode=pie \
 		-mod=readonly \

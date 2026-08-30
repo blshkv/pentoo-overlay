@@ -5,13 +5,13 @@ EAPI=8
 
 inherit go-module
 
-#EGO_PN="github.com/sensepost/gowitness"
-
 DESCRIPTION="A web screenshot utility using Chrome Headless"
 HOMEPAGE="https://github.com/sensepost/gowitness"
 
-SRC_URI="https://github.com/sensepost/gowitness/archive/${PV}.tar.gz -> ${P}.tar.gz
-	https://dev.pentoo.ch/~blshkv/distfiles/${P}-vendor.tar.xz"
+SRC_URI="
+	https://github.com/sensepost/gowitness/archive/${PV}.tar.gz -> ${P}.tar.gz
+	https://github.com/pentoo/pentoo-golang-dist/releases/download/${P}/${P}-deps.tar.xz
+"
 
 KEYWORDS="amd64 ~x86"
 LICENSE="CC-BY-SA-4.0 GPL-3 AGPL-3"

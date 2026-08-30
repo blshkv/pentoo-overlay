@@ -8,7 +8,10 @@ inherit go-module
 DESCRIPTION="Fast web fuzzer written in Go"
 HOMEPAGE="https://github.com/ffuf/ffuf"
 
-SRC_URI="https://github.com/ffuf/ffuf/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="
+	https://github.com/ffuf/ffuf/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz
+	https://github.com/pentoo/pentoo-golang-dist/releases/download/${P}/${P}-deps.tar.xz
+"
 
 LICENSE="MIT"
 SLOT="0"
@@ -16,10 +19,8 @@ KEYWORDS="~amd64 ~x86"
 
 S="${WORKDIR}/ffuf-${PV}"
 
-RESTRICT="network-sandbox"
-
 src_compile() {
-	ego build -o ffuf . 
+	ego build -o ffuf .
 }
 src_install() {
 	dobin ffuf
