@@ -1,0 +1,9 @@
+#!/sbin/openrc-run
+# Copyright 2026 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+description="Custom fan control curve for Zero_Chaos"
+supervisor="supervise-daemon"
+command="/usr/bin/zero_fan_control"
+respawn_delay=2
+respawn_max=0
