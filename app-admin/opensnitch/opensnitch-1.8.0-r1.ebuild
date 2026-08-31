@@ -94,6 +94,11 @@ src_prepare() {
 	default
 }
 
+src_configure() {
+	go-module_src_configure
+	distutils-r1_src_configure
+}
+
 src_compile() {
 	emake protocol || die
 
@@ -107,7 +112,6 @@ src_compile() {
 	popd > /dev/null || die
 
 	pushd daemon || die
-	go-module_src_configure
 	GOCACHE="${T}/go-cache" \
 	ego build -v -buildmode=pie -o opensnitchd || die
 	popd > /dev/null || die
