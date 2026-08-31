@@ -25,11 +25,12 @@ pkg_setup() {
 src_prepare() {
 	sed -i "s%<linux/if_ether.h>%<netinet/if_ether.h>%" src/dhcpclient.h || die
 	sed -i "s%<linux/if_tr.h>%<netinet/if_tr.h>%" src/dhcpclient.h || die
+	eapply "${FILESDIR}"/${PN}-2.04-implicit-decl.patch
 	eapply_user
 }
 
 src_configure() {
-	append-cflags -fcommon #dead upstream and I don't care
+	append-cflags -fcommon -Wno-implicit-function-declaration -Wno-implicit-int -Wno-int-conversion #dead upstream and I don't care
 	econf
 	sed -i 's#-I.#-I. -I/usr/include/tirpc#' src/Makefile || die
 }

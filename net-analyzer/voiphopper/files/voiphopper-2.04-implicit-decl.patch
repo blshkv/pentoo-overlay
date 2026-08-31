@@ -1,0 +1,255 @@
+--- voiphopper-2.04-orig/src/buildmsg.c	2026-08-31 21:54:56.538343677 +0800
++++ voiphopper-2.04/src/buildmsg.c	2026-08-31 21:55:52.243564699 +0800
+@@ -21,6 +21,8 @@
+ 
+ #include <string.h>
+ #include <stdlib.h>
++#include <stdio.h>
++#include <ctype.h>
+ #include <netinet/in.h>
+ #include <net/if_arp.h>
+ #include "dhcpclient.h"
+@@ -48,6 +50,16 @@
+ extern  char		*set_mac;
+ extern  int		macy;
+ 
++static uint8_t* hex_decode(const char *in, size_t len, uint8_t *out) {
++        unsigned int i, t, hn, ln;
++        for(t = 0, i = 0; i < len; i+=2, ++t) {
++                hn = in[i] > '9' ? in[i] - 'A' + 10 : in[i] - '0';
++                ln = in[i+1] > '9' ? in[i+1] - 'A' + 10 : in[i+1] - '0';
++                out[t] = (hn << 4 ) | ln;
++        }
++        return out;
++}
++
+ /*****************************************************************************/
+ void buildDhcpDiscover(xid)
+ unsigned xid;
+@@ -257,22 +269,6 @@
+                 }
+                 /* End of Convert all characters to upper case */
+ 
+-                /* Function to take two ASCII represented characters and output 1 hex byte representation */
+-                uint8_t* hex_decode(const char *in, size_t len, uint8_t *out) {
+-
+-                        unsigned int i, t, hn, ln;
+-
+-                        for(t = 0, i = 0; i < len; i+=2, ++t) {
+-
+-                                hn = in[i] > '9' ? in[i] - 'A' + 10 : in[i] - '0';
+-                                ln = in[i+1] > '9' ? in[i+1] - 'A' + 10 : in[i+1] - '0';
+-
+-                                out[t] = (hn << 4 ) | ln;
+-                        }
+-
+-                        return out;
+-                }
+-
+                 /* Take two ASCII represented characters and output 1 hex byte representation */
+                 uint8_t output[6];
+                 hex_decode(tmpMac2,strlen(tmpMac2), output);
+@@ -533,22 +529,6 @@
+                 }
+ 		/* End of Convert all characters to upper case */
+ 
+-		/* Function to take two ASCII represented characters and output 1 hex byte representation */
+-                uint8_t* hex_decode(const char *in, size_t len, uint8_t *out) {
+-
+-                        unsigned int i, t, hn, ln;
+-
+-                        for(t = 0, i = 0; i < len; i+=2, ++t) {
+-
+-                                hn = in[i] > '9' ? in[i] - 'A' + 10 : in[i] - '0';
+-                                ln = in[i+1] > '9' ? in[i+1] - 'A' + 10 : in[i+1] - '0';
+-
+-                                out[t] = (hn << 4 ) | ln;
+-                        }
+-
+-                        return out;
+-                }
+-
+ 		/* Take two ASCII represented characters and output 1 hex byte representation */
+                 uint8_t output[6];
+                 hex_decode(tmpMac2,strlen(tmpMac2), output);
+--- voiphopper-2.04-orig/src/lldp.c	2026-08-31 21:54:56.537626718 +0800
++++ voiphopper-2.04/src/lldp.c	2026-08-31 22:01:20.416900335 +0800
+@@ -99,6 +99,16 @@
+ 
+ // Function declarations
+ pcap_t * create_lldp_pcap(char *IfName_temp);
++
++static uint8_t* hex_decode(const char *in, size_t len, uint8_t *out) {
++        unsigned int i, t, hn, ln;
++        for(t = 0, i = 0; i < len; i+=2, ++t) {
++                hn = in[i] > '9' ? in[i] - 'A' + 10 : in[i] - '0';
++                ln = in[i+1] > '9' ? in[i+1] - 'A' + 10 : in[i+1] - '0';
++                out[t] = (hn << 4 ) | ln;
++        }
++        return out;
++}
+ void *send_lldp(void *threadarg, char *lldpmac);
+ 
+ int get_lldp( const struct pcap_pkthdr *header, const u_char *packet) {
+@@ -408,23 +418,6 @@
+                         tmpMac2[y] = toupper(tmpMac2[y]);
+                 }
+                 /* End of Convert all characters to upper case */
+-
+-                /* Function to take two ASCII represented characters and output 1 hex byte representation */
+-                uint8_t* hex_decode(const char *in, size_t len, uint8_t *out) {
+-
+-                        unsigned int i, t, hn, ln;
+-
+-                        for(t = 0, i = 0; i < len; i+=2, ++t) {
+-
+-                                hn = in[i] > '9' ? in[i] - 'A' + 10 : in[i] - '0';
+-                                ln = in[i+1] > '9' ? in[i+1] - 'A' + 10 : in[i+1] - '0';
+-
+-                                out[t] = (hn << 4 ) | ln;
+-                        }
+-
+-                        return out;
+-                }
+-
+                 /* Take two ASCII represented characters and output 1 hex byte representation */
+                 uint8_t output[6];
+                 hex_decode(tmpMac2,strlen(tmpMac2), output);
+@@ -477,23 +470,6 @@
+                         tmpMac2[y] = toupper(tmpMac2[y]);
+                 }
+                 /* End of Convert all characters to upper case */
+-
+-                /* Function to take two ASCII represented characters and output 1 hex byte representation */
+-                uint8_t* hex_decode(const char *in, size_t len, uint8_t *out) {
+-
+-                        unsigned int i, t, hn, ln;
+-
+-                        for(t = 0, i = 0; i < len; i+=2, ++t) {
+-
+-                                hn = in[i] > '9' ? in[i] - 'A' + 10 : in[i] - '0';
+-                                ln = in[i+1] > '9' ? in[i+1] - 'A' + 10 : in[i+1] - '0';
+-
+-                                out[t] = (hn << 4 ) | ln;
+-                        }
+-
+-                        return out;
+-                }
+-
+                 /* Take two ASCII represented characters and output 1 hex byte representation */
+                 uint8_t output[6];
+                 hex_decode(tmpMac2,strlen(tmpMac2), output);
+@@ -669,23 +645,6 @@
+                         tmpMac2[y] = toupper(tmpMac2[y]);
+                 }
+                 /* End of Convert all characters to upper case */
+-
+-                /* Function to take two ASCII represented characters and output 1 hex byte representation */
+-                uint8_t* hex_decode(const char *in, size_t len, uint8_t *out) {
+-
+-                        unsigned int i, t, hn, ln;
+-
+-                        for(t = 0, i = 0; i < len; i+=2, ++t) {
+-
+-                                hn = in[i] > '9' ? in[i] - 'A' + 10 : in[i] - '0';
+-                                ln = in[i+1] > '9' ? in[i+1] - 'A' + 10 : in[i+1] - '0';
+-
+-                                out[t] = (hn << 4 ) | ln;
+-                        }
+-
+-                        return out;
+-                }
+-
+                 /* Take two ASCII represented characters and output 1 hex byte representation */
+                 uint8_t output[6];
+                 hex_decode(tmpMac2,strlen(tmpMac2), output);
+@@ -738,23 +697,6 @@
+                         tmpMac2[y] = toupper(tmpMac2[y]);
+                 }
+                 /* End of Convert all characters to upper case */
+-
+-                /* Function to take two ASCII represented characters and output 1 hex byte representation */
+-                uint8_t* hex_decode(const char *in, size_t len, uint8_t *out) {
+-
+-                        unsigned int i, t, hn, ln;
+-
+-                        for(t = 0, i = 0; i < len; i+=2, ++t) {
+-
+-                                hn = in[i] > '9' ? in[i] - 'A' + 10 : in[i] - '0';
+-                                ln = in[i+1] > '9' ? in[i+1] - 'A' + 10 : in[i+1] - '0';
+-
+-                                out[t] = (hn << 4 ) | ln;
+-                        }
+-
+-                        return out;
+-                }
+-
+                 /* Take two ASCII represented characters and output 1 hex byte representation */
+                 uint8_t output[6];
+                 hex_decode(tmpMac2,strlen(tmpMac2), output);
+@@ -893,24 +835,6 @@
+ 			tmpMac2[y] = toupper(tmpMac2[y]);
+ 		}
+ 		/* End of Convert all characters to upper case */
+-
+-
+-		/* Function to take two ASCII represented characters and output 1 hex byte representation */
+-		uint8_t* hex_decode(const char *in, size_t len, uint8_t *out) {
+-
+-			unsigned int i, t, hn, ln;
+-
+-			for(t = 0, i = 0; i < len; i+=2, ++t) {
+-
+-				hn = in[i] > '9' ? in[i] - 'A' + 10 : in[i] - '0';
+-				ln = in[i+1] > '9' ? in[i+1] - 'A' + 10 : in[i+1] - '0';
+-
+-				out[t] = (hn << 4 ) | ln;
+-			}
+-
+-			return out;
+-		}
+-
+ 		/* Take two ASCII represented characters and output 1 hex byte representation */
+ 		uint8_t output[6];
+ 		hex_decode(tmpMac2,strlen(tmpMac2), output);
+@@ -1358,7 +1282,7 @@
+ 	spoofed_lldp_packet_len = retval2;
+ 
+ }
+-spoof_lldp_loop(char *lldpdev, char *interface) {
++int spoof_lldp_loop(char *lldpdev, char *interface) {
+ 
+ 	int atsock;
+ 	int vvid = 0;
+@@ -1532,7 +1456,7 @@
+ 			printf("Attempting dhcp request for new interface %s\n",vinterface);
+ 			alcatel_vvid_disc = 1;
+                 	int return_value = dhcpclientcall(vinterface);
+-			return;
++			return 0;
+ 		}
+ 	} else {
+ 		// Not doing dhcp client call
+--- voiphopper-2.04-orig/src/dhcpclient.c	2026-08-31 21:54:56.538089583 +0800
++++ voiphopper-2.04/src/dhcpclient.c	2026-08-31 21:56:40.916898379 +0800
+@@ -48,6 +48,8 @@
+ #include "pathnames.h"
+ #include "kversion.h"
+ 
++int dhcpTimedOut(void);
++
+ extern int avaya_vvid_disc;
+ extern int nortel_vvid_disc;
+ extern int alcatel_vvid_disc;
+--- voiphopper-2.04-orig/src/main.c	2026-08-31 21:54:56.537827624 +0800
++++ voiphopper-2.04/src/main.c	2026-08-31 21:56:51.096898452 +0800
+@@ -65,6 +65,9 @@
+ #include "pthread.h"
+ #include "global_includes.h"
+ 
++int spoof_lldp_loop(char *lldpdev, char *interface);
++void start_ass_ui(void);
++
+ #define SNAP_LEN 1518
+ 
+ #define SIZE_ETHERNET 14
