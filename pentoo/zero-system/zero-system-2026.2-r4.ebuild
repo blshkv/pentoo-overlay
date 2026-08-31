@@ -23,6 +23,8 @@ RDEPEND="
 		app-containers/docker
 		app-containers/docker-cli
 		app-containers/docker-buildx
+		app-laptop/framework_tool
+		app-laptop/framework-tool-tui
 		app-misc/usbeehive
 		app-portage/genlop
 		app-shells/gentoo-zsh-completions
@@ -42,7 +44,6 @@ RDEPEND="
 		desktop? (
 			|| ( app-office/libreoffice app-office/libreoffice-bin )
 			gnome-base/gnome-keyring
-			gui-apps/input-leap
 			media-gfx/gimp
 			media-gfx/inkscape
 			media-video/xine-ui
@@ -145,6 +146,10 @@ src_install() {
 	insinto /etc/ssh/ssh_config.d
 	doins "${FILESDIR}"/zero-system-ssh.conf
 	fperms 644 '/etc/ssh/ssh_config.d/zero-system-ssh.conf'
+
+	# Zero Fan Control
+	dobin "${FILESDIR}/zero_fan_control"
+	newinitd "${FILESDIR}/zero_fan_control.initd" zero_fan_control
 }
 
 pkg_postinst() {

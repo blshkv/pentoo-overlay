@@ -1,0 +1,100 @@
+#!/bin/sh
+set -e
+set -u
+#set -x
+
+LOGFILE='/var/log/zero_fan_control.log'
+
+if [ -r /sys/devices/virtual/dmi/id/board_vendor ]; then
+  if [ "$(cat /sys/devices/virtual/dmi/id/board_vendor)" = "Framework" ]; then
+    if [ -r /sys/devices/virtual/dmi/id/product_name ]; then
+      if [ "$(cat /sys/devices/virtual/dmi/id/product_name)" = "Laptop 13 (AMD Ryzen AI 300 Series)" ]; then
+        DEVICE_DETECTED="FW13"
+      fi
+    fi
+  fi
+fi
+if [ "${DEVICE_DETECTED}" = "FW13" ]; then
+  printf "Supported device found: AMD Ryzen AI 300 Series Framework 13\n" | tee "${LOGFILE}"
+  if framework_tool --test > /dev/null 2>&1; then
+    printf "Communication test: PASSED\n" | tee -a "${LOGFILE}"
+  else
+    printf "Communication test: FAILED\n" | tee -a "${LOGFILE}"
+    exit 1
+  fi
+else
+  printf "Supported device found: NONE\n" | tee -a "${LOGFILE}"
+  exit 1
+fi
+
+cleanup() {
+    exit_code=$?
+    printf 'Performing cleanup... Last exit code was: %s' "${exit_code}" | tee -a "${LOGFILE}"
+    framework_tool --autofanctrl
+    real_exit_code=$?
+
+    # Clear the trap to prevent an infinite loop, then exit with the real code
+    trap - EXIT
+    exit "${real_exit_code}"
+}
+
+trap cleanup EXIT INT TERM HUP QUIT
+
+while true; do
+  unset TEMP
+  TEMP="$(sensors -j 2>/dev/null | jq '[ paths as $p | select($p[-1] | strings | test("^temp[0-9]+_input$")) | getpath($p) ] | max')"
+  # Extract the integer part safely using POSIX parameter expansion
+  INT_TEMP="${TEMP%%.*}"
+
+  case "$INT_TEMP" in
+    # 91 to 99, or any 3+ digit number (100+)
+    9[1-9] | [1-9][0-9][0-9]*)
+    DESIRED_FANSPEED=100
+    ;;
+    # 86 to 90
+    8[6-9] | 90)
+    DESIRED_FANSPEED=85
+    ;;
+    # 81 to 85
+    8[1-5])
+    DESIRED_FANSPEED=75
+    ;;
+    # 76 to 80
+    7[6-9] | 80)
+    DESIRED_FANSPEED=70
+    ;;
+    # 71 to 75
+    7[1-5])
+    DESIRED_FANSPEED=65
+    ;;
+    # 51 to 70
+    5[1-9] | 6[0-9] | 70)
+    DESIRED_FANSPEED=60
+    ;;
+    # 46 to 50
+    4[6-9] | 50)
+    DESIRED_FANSPEED=45
+    ;;
+    # Anything 45 or below, or fallback
+    *)
+    DESIRED_FANSPEED=0
+    ;;
+  esac
+
+  if [ "${FAN_SPEED:-}" != "${DESIRED_FANSPEED}" ]; then
+    if [ "${DESIRED_FANSPEED}" = "0" ]; then
+      framework_tool --autofanctrl
+      printf 'Set fan control: auto\n' | tee -a "${LOGFILE}"
+    else
+      framework_tool --fansetduty "${DESIRED_FANSPEED}"
+      printf 'Set fan control: %s%%\n' "${DESIRED_FANSPEED}" | tee -a "${LOGFILE}"
+    fi
+    FAN_SPEED="${DESIRED_FANSPEED}"
+  fi
+
+  if [ "${INT_TEMP}" -gt 45 ]; then
+    sleep 10
+  else
+    sleep 60
+  fi
+done
