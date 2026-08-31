@@ -3,6 +3,7 @@
 
 EAPI=8
 
+GO_OPTIONAL=1
 DISTUTILS_USE_PEP517=setuptools
 PYTHON_COMPAT=( python3_{12..14} )
 inherit distutils-r1 go-module linux-info systemd xdg-utils
@@ -23,7 +24,9 @@ IUSE="+audit bpf +iptables +nftables systemd"
 REQUIRED_USE="!kernel_Hurd? ( || ( iptables nftables ) )"
 
 DEPEND="net-libs/libnetfilter_queue"
-BDEPEND+="
+BDEPEND="
+	>=dev-lang/go-1.24.11:=
+	app-arch/unzip
 	dev-libs/protobuf[protoc]
 	dev-go/protobuf-go
 	=dev-go/protoc-gen-go-grpc-1.3.0
