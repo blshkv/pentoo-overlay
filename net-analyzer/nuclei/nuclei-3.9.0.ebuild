@@ -7,7 +7,10 @@ inherit go-module flag-o-matic
 
 DESCRIPTION="Simple and configurable vulnerability scanner based on YAML templates"
 HOMEPAGE="https://github.com/projectdiscovery/nuclei https://projectdiscovery.io"
-SRC_URI="https://github.com/projectdiscovery/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.gh.tar.gz"
+SRC_URI="
+	https://github.com/projectdiscovery/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.gh.tar.gz
+	https://github.com/pentoo/pentoo-golang-dist/releases/download/${P}/${P}-deps.tar.xz
+"
 
 LICENSE="MIT"
 SLOT="0"
@@ -27,13 +30,6 @@ BDEPEND="
 QA_PREBUILD="*"
 
 S="${WORKDIR}/${PN}-${PV}"
-
-go-module_set_globals
-GOFLAGS="-mod=mod"
-
-
-export GOPROXY="https://proxy.golang.org,direct"
-export GOSUMDB="sum.golang.org"
 
 src_prepare() {
 	default
@@ -55,7 +51,7 @@ src_compile() {
         "-X main.BuildTime=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
     )
 
-	go build \
+	ego build \
 		-trimpath \
 		-buildmode=pie \
 		-mod=readonly \

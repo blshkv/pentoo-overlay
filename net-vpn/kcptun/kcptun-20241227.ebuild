@@ -3,37 +3,37 @@
 
 EAPI=8
 
-EGO_PN="github.com/xtaci/kcptun"
-
 inherit go-module
 
-DESCRIPTION="A Stable & Secure Tunnel Based On KCP with N:M Multiplexing"
-HOMEPAGE="https://github.com/xtaci/kcptun"
+GO_SOURCE_VERSION="v0.0.0-20260208051026-39935d5307f0"
 
-SRC_URI="https://github.com/xtaci/kcptun/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+DESCRIPTION="A Stable & Secure Tunnel Based On KCP with N:M Multiplexing"
+HOMEPAGE="https://pkg.go.dev/github.com/xtaci/kcptun"
+
+SRC_URI="
+	https://proxy.golang.org/github.com/xtaci/kcptun/@v/${GO_SOURCE_VERSION}.zip -> ${P}.zip
+	https://github.com/pentoo/pentoo-golang-dist/releases/download/${P}/${P}-deps.tar.xz
+"
 
 KEYWORDS="~amd64 ~arm64"
 LICENSE="MIT"
 IUSE="+server"
 SLOT="0"
+S="${WORKDIR}/github.com/xtaci/${PN}@${GO_SOURCE_VERSION}"
 
 src_compile() {
-#	for x in client $(usev server); do
-#		CGO_ENABLED=0 GOPATH="${S}:$(get_golibdir_gopath)" \
-#			go build -v -work -x -ldflags "-X main.VERSION=${PV} -w" \
-#				-o "bin/${PN}-${x}" "${EGO_PN}/${x}" || die
-#	done
-	./build-release.sh
+	local ldflags=(
+		"-X main.VERSION=${PV}"
+		"-w"
+	)
+
+	CGO_ENABLED=0 ego build -trimpath -ldflags "${ldflags[*]}" -o "${PN}-client" ./client
+	use server && CGO_ENABLED=0 ego build -trimpath -ldflags "${ldflags[*]}" -o "${PN}-server" ./server
 }
 
 src_install() {
-#	dodoc "src/${EGO_PN}"/{README.md,Dockerfile}
-
-	use amd64 && newbin build/client_linux_amd64 ${PN}-client
-	use arm64 && newbin build/client_linux_arm64 ${PN}-client
-
-	use amd64 && use server && newbin build/server_linux_amd64 ${PN}-server
-	use arm64 && use server && newbin build/server_linux_arm64 ${PN}-server
+	dobin ${PN}-client
+	use server && dobin ${PN}-server
 
 	insinto "/etc/kcptun"
 	for x in client $(usev server); do
@@ -54,6 +54,6 @@ pkg_postinst() {
 	ewarn "    net.core.netdev_max_backlog=2048 // proportional to -rcvwnd"
 
 	einfo "\nSee documentation:"
-	einfo "    https://github.com/xtaci/kcptun#quickstart"
+	einfo "    https://pkg.go.dev/github.com/xtaci/kcptun"
 	einfo "    https://github.com/skywind3000/kcp/blob/master/README.en.md\n"
 }

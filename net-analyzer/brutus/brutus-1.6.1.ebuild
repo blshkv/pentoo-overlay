@@ -7,7 +7,10 @@ inherit go-module
 
 DESCRIPTION="Fast, zero-dependency credential testing tool in Go. "
 HOMEPAGE="https://github.com/praetorian-inc/brutus/wiki"
-SRC_URI="https://github.com/praetorian-inc/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="
+	https://github.com/praetorian-inc/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz
+	https://github.com/pentoo/pentoo-golang-dist/releases/download/${P}/${P}-deps.tar.xz
+"
 S="${WORKDIR}/${PN}-${PV}"
 
 LICENSE="MIT"
@@ -29,10 +32,6 @@ BDEPEND="
 
 QA_PREBUILD="*"
 
-GOFLAGS="-mod=mod"
-export GOPROXY="https://proxy.golang.org,direct"
-export GOSUMDB="sum.golang.org"
-
 src_prepare() {
 	default
 }
@@ -50,7 +49,7 @@ local brutus_ldflags=(
 		"-X main.BuildTime=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 	)
 
-	go build \
+	ego build \
 		-trimpath \
 		-buildmode=pie \
 		-mod=readonly \

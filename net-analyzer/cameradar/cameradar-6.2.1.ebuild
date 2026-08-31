@@ -5,13 +5,13 @@ EAPI=8
 
 inherit go-module
 
-P_VENDOR="https://dev.pentoo.ch/~blshkv/distfiles/${PN}-6.2.0-vendor.tar.xz"
-
 DESCRIPTION="Cameradar hacks its way into RTSP videosurveillance cameras"
 HOMEPAGE="https://github.com/ullaakut/cameradar"
 
-SRC_URI="https://github.com/ullaakut/cameradar/archive/refs/tags/v${PV}.tar.gz -> ${P}.gh.tar.gz
-	${P_VENDOR}"
+SRC_URI="
+	https://github.com/ullaakut/cameradar/archive/refs/tags/v${PV}.tar.gz -> ${P}.gh.tar.gz
+	https://github.com/pentoo/pentoo-golang-dist/releases/download/${P}/${P}-deps.tar.xz
+"
 
 LICENSE="BSD"
 SLOT="0"
@@ -22,7 +22,7 @@ RDEPEND=">=dev-lang/go-1.12"
 DEPEND="${RDEPEND}"
 
 src_compile() {
-	env GOBIN="${S}/bin" go install ./... ||
+	GOBIN="${S}/bin" ego install ./... ||
 		die "compile failed"
 }
 

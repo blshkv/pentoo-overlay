@@ -7,7 +7,10 @@ inherit go-module
 
 DESCRIPTION="A next-generation crawling and spidering framework."
 HOMEPAGE="https://github.com/projectdiscovery/katana https://projectdiscovery.io"
-SRC_URI="https://github.com/projectdiscovery/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.gh.tar.gz"
+SRC_URI="
+	https://github.com/projectdiscovery/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.gh.tar.gz
+	https://github.com/pentoo/pentoo-golang-dist/releases/download/${P}/${P}-deps.tar.xz
+"
 
 S="${WORKDIR}/${PN}-${PV}"
 LICENSE="MIT"
@@ -26,12 +29,6 @@ BDEPEND="
 
 QA_PREBUILD="*"
 
-go-module_set_globals
-GOFLAGS="-mod=mod"
-
-export GOPROXY="https://proxy.golang.org,direct"
-export GOSUMDB="sum.golang.org"
-
 src_prepare() {
 	default
 }
@@ -49,7 +46,7 @@ local katana_ldflags=(
 		"-X main.BuildTime=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 	)
 
-	go build \
+	ego build \
 		-trimpath \
 		-buildmode=pie \
 		-mod=readonly \

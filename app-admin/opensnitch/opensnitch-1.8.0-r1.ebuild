@@ -3,6 +3,7 @@
 
 EAPI=8
 
+GO_OPTIONAL=1
 DISTUTILS_USE_PEP517=setuptools
 PYTHON_COMPAT=( python3_{12..14} )
 inherit distutils-r1 go-module linux-info systemd xdg-utils
@@ -12,7 +13,7 @@ HOMEPAGE="https://github.com/evilsocket/opensnitch"
 
 SRC_URI="
 	https://github.com/evilsocket/opensnitch/archive/refs/tags/v${PV}.tar.gz -> ${P}.gh.tar.gz
-	https://dev.pentoo.ch/~blshkv/distfiles/${P}-vendor.tar.xz
+	https://github.com/pentoo/pentoo-golang-dist/releases/download/${P}/${P}-deps.tar.xz
 "
 
 LICENSE="GPL-3"
@@ -22,8 +23,11 @@ KEYWORDS="amd64"
 IUSE="+audit bpf +iptables +nftables systemd"
 REQUIRED_USE="!kernel_Hurd? ( || ( iptables nftables ) )"
 
-DEPEND=">=dev-lang/go-1.19
-	net-libs/libnetfilter_queue
+DEPEND="net-libs/libnetfilter_queue"
+BDEPEND="
+	>=dev-lang/go-1.24.11:=
+	app-arch/unzip
+	dev-libs/protobuf[protoc]
 	dev-go/protobuf-go
 	=dev-go/protoc-gen-go-grpc-1.3.0
 "
@@ -90,6 +94,11 @@ src_prepare() {
 	default
 }
 
+src_configure() {
+	go-module_src_configure
+	distutils-r1_src_configure
+}
+
 src_compile() {
 	emake protocol || die
 
@@ -104,7 +113,6 @@ src_compile() {
 
 	pushd daemon || die
 	GOCACHE="${T}/go-cache" \
-	GOMODCACHE="${WORKDIR}/${PN}-${PV}/vendor" \
 	ego build -v -buildmode=pie -o opensnitchd || die
 	popd > /dev/null || die
 

@@ -3,13 +3,14 @@
 
 EAPI=8
 
-EGO_PN="github.com/zricethezav/gitleaks"
 inherit go-module
 
 DESCRIPTION="Audit git repos for secrets"
 HOMEPAGE="https://github.com/zricethezav/gitleaks"
-SRC_URI="https://github.com/zricethezav/gitleaks/archive/v${PV}.tar.gz -> ${P}.tar.gz
-	https://dev.pentoo.ch/~blshkv/distfiles/${P}-vendor.tar.xz"
+SRC_URI="
+	https://github.com/zricethezav/gitleaks/archive/v${PV}.tar.gz -> ${P}.tar.gz
+	https://github.com/pentoo/pentoo-golang-dist/releases/download/${P}/${P}-deps.tar.xz
+"
 
 LICENSE="GPL-3"
 SLOT="0"

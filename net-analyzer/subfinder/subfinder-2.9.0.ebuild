@@ -8,8 +8,9 @@ inherit go-module
 DESCRIPTION="A subdomain discovery tool that discovers valid subdomains for websites"
 HOMEPAGE="https://github.com/projectdiscovery/subfinder"
 
-SRC_URI="https://github.com/projectdiscovery/subfinder/archive/v${PV}.tar.gz -> ${P}.gh.tar.gz
-	https://dev.pentoo.ch/~blshkv/distfiles/${P}-vendor.tar.xz
+SRC_URI="
+	https://github.com/projectdiscovery/subfinder/archive/v${PV}.tar.gz -> ${P}.gh.tar.gz
+	https://github.com/pentoo/pentoo-golang-dist/releases/download/${P}/${P}-deps.tar.xz
 "
 
 LICENSE="MIT"
