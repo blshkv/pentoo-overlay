@@ -1,15 +1,14 @@
-diff '--color=auto' -Naur a/Ghidra/Features/FileFormats/build.gradle b/Ghidra/Features/FileFormats/build.gradle
---- a/Ghidra/Features/FileFormats/build.gradle	2026-08-14 20:02:49.000000000 +0200
-+++ b/Ghidra/Features/FileFormats/build.gradle	2026-08-27 11:41:44.696900155 +0200
+--- a/Ghidra/Features/FileFormats/build.gradle	2026-09-01 19:12:43.852535649 +0800
++++ b/Ghidra/Features/FileFormats/build.gradle	2026-09-01 19:12:57.977038556 +0800
 @@ -47,7 +47,7 @@
-
+ 
  	// Used by "ZIP" and "7zip" file systems
- 	api 'net.sf.sevenzipjbinding:sevenzipjbinding:16.02-2.01'
+ 	api 'net.sf.sevenzipjbinding:sevenzipjbinding:16.02-2.01'	
 -	runtimeOnly 'net.sf.sevenzipjbinding:sevenzipjbinding-all-platforms:16.02-2.01'
 +	runtimeOnly 'net.sf.sevenzipjbinding:sevenzipjbinding-linux-arm64:16.02-2.01'
-
+ 	
  	// include code from src/test/slow in Base
- 	testImplementation project(path: ':Base', configuration: 'integrationTestArtifacts')
+ 	testImplementation project(path: ':Base', configuration: 'integrationTestArtifacts')	
 @@ -74,7 +74,7 @@
  String getSevenZipJarPath() {
      List<String> libs = getExternalRuntimeDependencies(project);
@@ -30,12 +29,11 @@ diff '--color=auto' -Naur a/Ghidra/Features/FileFormats/build.gradle b/Ghidra/Fe
  	    exclude "META-INF"
 -	    exclude "Linux-i386"
 -	    exclude "Windows-x86"
- 	    into ("build/data/sevenzipnativelibs")
-     }
+ 	    into ("build/data/sevenzipnativelibs") 
+     }   
  }
-diff '--color=auto' -Naur a/Ghidra/Features/FileFormats/Module.manifest b/Ghidra/Features/FileFormats/Module.manifest
---- a/Ghidra/Features/FileFormats/Module.manifest	2026-08-14 20:02:49.000000000 +0200
-+++ b/Ghidra/Features/FileFormats/Module.manifest	2026-08-27 12:15:24.734151744 +0200
+--- a/Ghidra/Features/FileFormats/Module.manifest	2026-09-01 19:12:43.854453874 +0800
++++ b/Ghidra/Features/FileFormats/Module.manifest	2026-09-01 19:13:09.431939563 +0800
 @@ -6,7 +6,7 @@
  MODULE FILE LICENSE: lib/dexlib2-2.5.2.jar BSD-3-GRUVER
  MODULE FILE LICENSE: lib/util-2.5.2.jar BSD-3-GRUVER
