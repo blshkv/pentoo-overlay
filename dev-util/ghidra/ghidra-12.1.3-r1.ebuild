@@ -61,10 +61,10 @@ SRC_URI="https://github.com/NationalSecurityAgency/${PN}/archive/refs/tags/Ghidr
 	https://sourceforge.net/projects/pydev/files/pydev/PyDev%209.3.0/PyDev%209.3.0.zip -> PyDev-9.3.0.zip
 	https://github.com/NationalSecurityAgency/ghidra-data/raw/Ghidra_${RELEASE_VERSION}/lib/java-sarif-2.1-modified.jar
 	amd64? (
-		https://github.com/Z3Prover/z3/releases/download/z3-${Z3_VER}/${Z3_NAME}.zip
+		https://github.com/Z3Prover/z3/releases/download/z3-4.13.0/z3-4.13.0-x64-glibc-2.31.zip
 	)
 	arm64? (
-		https://github.com/Z3Prover/z3/releases/download/z3-${Z3_VER}/${Z3_NAME}.zip
+		https://github.com/Z3Prover/z3/releases/download/z3-5.1.0/z3-5.1.0-arm64-glibc-2.38.zip
 		https://repo1.maven.org/maven2/com/google/protobuf/protoc/${PROTOC_VER}/protoc-${PROTOC_VER}-linux-aarch_64.exe
 		https://repo1.maven.org/maven2/net/sf/sevenzipjbinding/sevenzipjbinding-linux-arm64/${SEVENZIP_VER}/sevenzipjbinding-linux-arm64-${SEVENZIP_VER}.jar
 		https://repo1.maven.org/maven2/net/sf/sevenzipjbinding/sevenzipjbinding-linux-arm64/${SEVENZIP_VER}/sevenzipjbinding-linux-arm64-${SEVENZIP_VER}.pom
