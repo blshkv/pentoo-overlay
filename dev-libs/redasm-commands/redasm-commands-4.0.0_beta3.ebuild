@@ -3,19 +3,16 @@
 
 EAPI=8
 
-GITHUB_REPOSITORY="redasm-dev/processors"
+GITHUB_REPOSITORY="redasm-dev/commands"
 
 inherit cmake github-archive
 
-DESCRIPTION="Redasm Processor plugins"
+DESCRIPTION="Redasm Command plugins"
+HOMEPAGE="https://github.com/redasm-dev/commands https://redasm.dev/"
 
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~arm64 ~x86"
 
-DEPEND="
-	dev-libs/libredasm
-	>=dev-libs/capstone-6.0.0_alpha7
-	dev-libs/zydis
-"
+DEPEND="=dev-libs/libredasm-${PV}"
 RDEPEND="${DEPEND}"
