@@ -177,6 +177,7 @@ QA_FLAGS_IGNORED="
 src_prepare() {
 	eapply_user
 	sed -i "s#%h/.cargo#/usr#" systemd/usbeehived.service || die
+	sed -i '/Type=dbus/i \DynamicUser=yes' systemd/usbeehived.service || die
 }
 
 src_configure() {
@@ -189,6 +190,8 @@ src_configure() {
 src_install() {
 	cargo_src_install
 
-	systemd_dounit systemd/usbeehived.service
-	newinitd "${FILESDIR}/usbeehived.initd" usbeehived
+	if use dbus; then
+		systemd_dounit systemd/usbeehived.service
+		newinitd "${FILESDIR}/usbeehived.initd" usbeehived
+	fi
 }
