@@ -502,14 +502,9 @@ main_checks() {
 
   #deep checks for python, including fix
   #first we set the python interpreters to match PYTHON_TARGETS (and ensure the versions we set are actually built)
-  PYTHON2=$(emerge --info | grep -oE '^PYTHON_TARGETS=".*(python[23]_[0-9]\s*)+"' | grep -oE 'python2_[0-9]' | cut -d\" -f2 | cut -d" " -f 1 |sed 's#_#.#')
   #PYTHON_SINGLE_TARGET is the *main* python3 implementation
-  PYTHON3=$(emerge --info | grep -oE '^PYTHON_SINGLE_TARGET=".*(python3_[0-9]+\s*)+"' | grep -oE 'python3_[0-9]+' | cut -d\" -f2 | sed 's#_#.#')
-  if [ -z "${PYTHON2}" ]; then
-    printf "Detected Python 2 is disabled\n"
-    printf "From PYTHON_TARGETS: %s\n" "$(emerge --info | grep '^PYTHON_TARGETS')"
-    printf "This is a good thing :-)\n"
-  fi
+  PYTHON3="$(portageq envvar PYTHON_SINGLE_TARGET | sed 's#_#.#')"
+  #PYTHON3="$(emerge --info | grep --color=never -oE '\bPYTHON_SINGLE_TARGET="[^"]+"' | grep --color=never -oE 'python3_[0-9]+' | sed 's#_#.#')"
   if [ -z "${PYTHON3}" ]; then
     printf "Failed to autodetect PYTHON_TARGETS\n"
     printf "Detected Python 3: %s" "${PYTHON3:-none}"
@@ -518,12 +513,17 @@ main_checks() {
     printf "This is fatal, python3 support is required, it is %s\n" "$(date +'%Y')"
     exit 1
   fi
-  "${PYTHON3}" -c "from _multiprocessing import SemLock" || emerge -1 python:"${PYTHON3#python}"
-
-  #fix python2, if it's even requested
-  if [ -n "${PYTHON2}" ]; then
-    "${PYTHON2}" -c "from _multiprocessing import SemLock" || emerge -1 python:"${PYTHON2#python}"
+  if ! "${PYTHON3}" --version; then
+    emerge -1 python:"${PYTHON3#python}"
   fi
+  if ! "${PYTHON3}" -c "from _multiprocessing import SemLock"; then
+    emerge -1 python:"${PYTHON3#python}"
+  fi
+  if ! "${PYTHON3}" --version || ! "${PYTHON3}" -c "from _multiprocessing import SemLock"; then
+    printf 'The selected PYTHON_SINGLE_TARGET %s does not seem to be functional.  Aborting for safety.\n' "${PYTHON3}"
+    exit 1
+  fi
+
 
   #always update portage as early as we can (after making sure python works)
   emerge --update --newuse --oneshot --changed-deps --newrepo portage || safe_exit
