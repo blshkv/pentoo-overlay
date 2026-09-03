@@ -710,8 +710,8 @@ main_upgrades() {
   if portageq list_preserved_libs /; then
     FEATURES="-getbinpkg" emerge @preserved-rebuild --usepkg=n --buildpkg=y || safe_exit
   fi
-  FEATURES="-getbinpkg" smart-live-rebuild 2>&1 || safe_exit
-  revdep-rebuild -i -v -- --usepkg=n --buildpkg=y || safe_exit
+  FEATURES="-getbinpkg" smart-live-rebuild -- --quiet 2>&1 || safe_exit
+  revdep-rebuild -i -v -- --quiet --usepkg=n --buildpkg=y || safe_exit
   if ! emerge --deep --update --newuse -kb --changed-deps --newrepo @world; then
     emerge --deep --update --newuse -kb --changed-deps --newrepo --with-bdeps=y @world || safe_exit
   fi
