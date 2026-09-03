@@ -513,13 +513,13 @@ main_checks() {
     printf "This is fatal, python3 support is required, it is %s\n" "$(date +'%Y')"
     exit 1
   fi
-  if ! "${PYTHON3}" --version; then
+  if ! "${PYTHON3}" --version > /dev/null 2>&1; then
     emerge -1 python:"${PYTHON3#python}"
   fi
   if ! "${PYTHON3}" -c "from _multiprocessing import SemLock"; then
     emerge -1 python:"${PYTHON3#python}"
   fi
-  if ! "${PYTHON3}" --version || ! "${PYTHON3}" -c "from _multiprocessing import SemLock"; then
+  if ! "${PYTHON3}" --version > /dev/null 2>&1 || ! "${PYTHON3}" -c "from _multiprocessing import SemLock"; then
     printf 'The selected PYTHON_SINGLE_TARGET %s does not seem to be functional.  Aborting for safety.\n' "${PYTHON3}"
     exit 1
   fi
