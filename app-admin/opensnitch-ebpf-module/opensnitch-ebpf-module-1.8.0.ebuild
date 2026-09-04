@@ -56,9 +56,13 @@ pkg_setup() {
 }
 
 src_compile() {
+	local extra_flags="-fno-stack-protector -fcf-protection"
+	# kernel 6.19 restructured ns_common with anonymous structs requiring MS extensions
+	kernel_is -ge 6 19 && extra_flags+=" -Wno-microsoft-anon-tag -fms-extensions"
+
 	MODULES_MAKEARGS+=(
 		ARCH="x86"
-		EXTRA_FLAGS="-fno-stack-protector -fcf-protection"
+		EXTRA_FLAGS="${extra_flags}"
 		KERNEL_DIR="${KV_DIR}"
 		KERNEL_HEADERS=/usr # gentoo installs linux-headers to /usr
 	)
