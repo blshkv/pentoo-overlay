@@ -3,7 +3,9 @@
 
 EAPI=8
 
-inherit cmake flag-o-matic
+PYTHON_COMPAT=( python3_{12..14} )
+
+inherit cmake flag-o-matic python-single-r1
 
 DESCRIPTION="plain-C Protocol Buffers for embedded/memory-constrained systems"
 HOMEPAGE="https://jpa.kapsi.fi/nanopb/ https://github.com/nanopb/nanopb"
@@ -14,8 +16,14 @@ SLOT="0"
 KEYWORDS="amd64 ~arm64 x86"
 IUSE="doc examples +pb-malloc"
 
+REQUIRED_USE="${PYTHON_REQUIRED_USE}"
+
 RDEPEND="
+	${PYTHON_DEPS}
 	dev-libs/protobuf
+	$(python_gen_cond_dep '
+		dev-python/grpcio-tools[${PYTHON_USEDEP}]
+	')
 "
 DEPEND="
 	dev-build/scons
@@ -26,7 +34,17 @@ S="${WORKDIR}/${PN}-${PV}"
 
 src_configure() {
 	use pb-malloc && append-cppflags "-DPB_ENABLE_MALLOC"
+
+	local mycmakeargs=(
+		-DBUILD_SHARED_LIBS=ON
+		-DBUILD_STATIC_LIBS=OFF
+	)
 	cmake_src_configure
+}
+
+src_install() {
+	cmake_src_install
+	python_optimize
 }
 
 src_test() {
