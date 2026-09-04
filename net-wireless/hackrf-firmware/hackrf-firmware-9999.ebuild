@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit cmake flag-o-matic
+inherit cmake
 
 DESCRIPTION="Hardware designs and software for HackRF"
 HOMEPAGE="http://greatscottgadgets.com/hackrf/"
@@ -28,8 +28,9 @@ RDEPEND="${DEPEND}
 		!<net-wireless/hackrf-tools-${PV}"
 
 src_configure() {
-	strip-flags
-	filter-flags "-march=*" "-mtune=*"
+	# Clear all host flags - arm-none-eabi bare-metal cross-compile must not
+	# receive host-specific flags (e.g. -march=x86-64-v3, -msse4.2)
+	unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
 	cmake_src_configure
 }
 
