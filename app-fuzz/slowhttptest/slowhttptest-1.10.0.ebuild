@@ -1,11 +1,16 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 2026 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
+GITHUB_REPOSITORY="shekyan/slowhttptest"
+#GITHUB_TAG="v"
+
+inherit github-archive
+
 DESCRIPTION="Application Layer DoS attack simulator"
-HOMEPAGE="https://github.com/shekyan/slowhttptest"
-SRC_URI="https://github.com/shekyan/slowhttptest/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+#HOMEPAGE="https://github.com/shekyan/slowhttptest"
+#SRC_URI="https://github.com/shekyan/slowhttptest/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="Apache-2.0"
 SLOT="0"
