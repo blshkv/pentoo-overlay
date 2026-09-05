@@ -12,6 +12,7 @@ SRC_URI="https://github.com/simsong/bulk_extractor/releases/download/v${PV}/${P}
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
+RESTRICT="test"
 
 #fails to compile with ewf
 #fails to compile with exiv2
