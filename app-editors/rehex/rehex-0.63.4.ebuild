@@ -42,7 +42,10 @@ BDEPEND="virtual/pkgconfig
 	$(lua_gen_cond_dep '
 		dev-lua/busted[${LUA_USEDEP}]
 	')
-	doc? ( dev-perl/Template-Toolkit )"
+	doc? (
+		app-arch/zip
+		dev-perl/Template-Toolkit
+	)"
 
 src_configure() {
 	export LUA_PKG=${ELUA}
