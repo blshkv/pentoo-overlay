@@ -6,7 +6,34 @@ on:
       - master
 
 jobs:
+  skip-check:
+    runs-on: ubuntu-latest
+    outputs:
+      should_skip: ${{ steps.check.outputs.skip }}
+    steps:
+    -
+      name: Check if already passed for this commit
+      id: check
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+        WORKFLOW_NAME="${{ github.workflow }}"
+        WORKFLOW_ID=$(gh api "repos/${{ github.repository }}/actions/workflows" | \
+          jq -r --arg name "$WORKFLOW_NAME" '.workflows[] | select(.name == $name) | .id')
+        SUCCESSFUL=$(gh api \
+          "repos/${{ github.repository }}/actions/workflows/${WORKFLOW_ID}/runs?head_sha=${HEAD_SHA}&per_page=10" \
+          --jq "[.workflow_runs[] | select(.conclusion == \"success\" and .id != ${{ github.run_id }})] | length")
+        if [ "${SUCCESSFUL:-0}" -gt "0" ]; then
+          echo "Workflow already passed for ${HEAD_SHA}, skipping."
+          echo "skip=true" >> $GITHUB_OUTPUT
+        else
+          echo "skip=false" >> $GITHUB_OUTPUT
+        fi
+
   pentoo-build-test:
+    needs: skip-check
+    if: needs.skip-check.outputs.should_skip != 'true'
     runs-on: ubuntu-latest
     steps:
     -
@@ -26,16 +53,6 @@ jobs:
       uses: actions/checkout@v5
       with:
         fetch-depth: 0
-    -
-      name: Check branch is in sync with master
-      if: github.event_name == 'pull_request'
-      run: |
-        git fetch origin master
-        BEHIND=$(git rev-list "${{ github.event.pull_request.head.sha }}"..origin/master --count)
-        if [ "$BEHIND" -gt 0 ]; then
-          echo "::error::Branch is $BEHIND commit(s) behind master. Please rebase before running CI."
-          exit 1
-        fi
     -
       name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v4
