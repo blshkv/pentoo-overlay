@@ -27,6 +27,16 @@ jobs:
       with:
         fetch-depth: 0
     -
+      name: Check branch is in sync with master
+      if: github.event_name == 'pull_request'
+      run: |
+        git fetch origin master
+        BEHIND=$(git rev-list "${{ github.event.pull_request.head.sha }}"..origin/master --count)
+        if [ "$BEHIND" -gt 0 ]; then
+          echo "::error::Branch is $BEHIND commit(s) behind master. Please rebase before running CI."
+          exit 1
+        fi
+    -
       name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v4
     -
