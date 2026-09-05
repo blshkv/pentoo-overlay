@@ -20,9 +20,7 @@ else
 	fi
 
 	# Never stabilize snapshot ebuilds please
-# unable to apply WPE patch:
-# https://github.com/aircrack-ng/aircrack-ng/issues/2662
-#	KEYWORDS="amd64 arm arm64 ~mips ppc x86"
+	KEYWORDS="amd64 arm arm64 ~mips ppc x86"
 fi
 
 LICENSE="BSD"

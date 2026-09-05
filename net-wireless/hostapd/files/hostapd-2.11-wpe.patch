@@ -3399,8 +3399,8 @@ diff '--color=auto' -rupN hostapd-2.11/hostapd/main.c hostapd-2.11-wpe/hostapd/m
  		"User space daemon for IEEE 802.11 AP management,\n"
  		"IEEE 802.1X/WPA/WPA2/EAP/RADIUS Authenticator\n"
  		"Copyright (c) 2002-2024, Jouni Malinen <j@w1.fi> "
-- 		"and contributors\n",
-+ 		"and contributors\n"
+-		"and contributors\n",
++		"and contributors\n"
 +		"-----------------------------------------------------\n"
 +		"WPE (Wireless Pwnage Edition)\n"
 +		"This version has been cleverly modified to target\n"
@@ -3567,15 +3567,7 @@ diff '--color=auto' -rupN hostapd-2.11/src/crypto/ms_funcs.h hostapd-2.11-wpe/sr
 diff '--color=auto' -rupN hostapd-2.11/src/crypto/tls_openssl.c hostapd-2.11-wpe/src/crypto/tls_openssl.c
 --- hostapd-2.11/src/crypto/tls_openssl.c	2024-07-26 12:31:12.300000000 +0000
 +++ hostapd-2.11-wpe/src/crypto/tls_openssl.c	2024-07-26 12:33:34.152000000 +0000
-@@ -29,7 +29,6 @@
- #include <openssl/opensslv.h>
- #include <openssl/pkcs12.h>
- #include <openssl/x509v3.h>
--#include <openssl/rand.h>
- #if OPENSSL_VERSION_NUMBER >= 0x30000000L
- #include <openssl/core_names.h>
- #include <openssl/decoder.h>
-@@ -50,6 +49,7 @@
+@@ -49,6 +49,7 @@
  #include "sha256.h"
  #include "tls.h"
  #include "tls_openssl.h"
