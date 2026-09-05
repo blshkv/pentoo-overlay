@@ -19,8 +19,8 @@ jobs:
       run: |
         HEAD_SHA="${{ github.event.pull_request.head.sha }}"
         WORKFLOW_NAME="${{ github.workflow }}"
-        WORKFLOW_ID=$(gh api "repos/${{ github.repository }}/actions/workflows" \
-          --jq --arg name "$WORKFLOW_NAME" '.workflows[] | select(.name == $name) | .id')
+        WORKFLOW_ID=$(gh api "repos/${{ github.repository }}/actions/workflows" | \
+          jq -r --arg name "$WORKFLOW_NAME" '.workflows[] | select(.name == $name) | .id')
         SUCCESSFUL=$(gh api \
           "repos/${{ github.repository }}/actions/workflows/${WORKFLOW_ID}/runs?head_sha=${HEAD_SHA}&per_page=10" \
           --jq "[.workflow_runs[] | select(.conclusion == \"success\" and .id != ${{ github.run_id }})] | length")
